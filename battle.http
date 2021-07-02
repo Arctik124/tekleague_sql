@@ -1,0 +1,58 @@
+
+
+GET http://localhost:3000/api/battle?playerID=3 HTTP/1.1
+
+GET  http://localhost:3000/api/battle/10 HTTP/1.1
+
+PUT  http://localhost:3000/api/battle/12/accept HTTP/1.1
+content-type: application/json
+
+{
+  "accept": "true"
+}
+
+PUT  http://localhost:3000/api/battle/12/confirm HTTP/1.1
+content-type: application/json
+
+{
+  "accept": "true"
+}
+
+PUT  http://localhost:3000/api/battle/12 HTTP/1.1
+content-type: application/json
+
+{
+  "score1": "7",
+  "score2": "2",
+  "UserID": "2"
+}
+
+
+
+GET http://localhost:3000/api/battle/2 HTTP/1.1
+
+
+
+
+
+
+POST http://localhost:3000/api/battle HTTP/1.1
+content-type: application/json
+
+{
+  "player1" : "2",
+  "player2" : "3",
+  "max_score" : "7"
+}
+
+PUT http://localhost:3000/api/user/2 HTTP/1.1
+content-type: application/json
+
+{
+  "name": "Arctik",
+  "main_char": "Lars",
+  "password": "qwer11234", 
+  "password2": "qwer11234"
+}
+
+DELETE http://localhost:3000/api/user/1 HTTP/1.1

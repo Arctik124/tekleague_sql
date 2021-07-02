@@ -1,0 +1,35 @@
+
+
+GET http://localhost:3000/api/user HTTP/1.1
+
+GET http://localhost:3000/api/user/2 HTTP/1.1
+
+
+
+
+
+
+POST http://localhost:3000/api/user HTTP/1.1
+content-type: application/json
+
+{
+  "name": "Aecr", 
+  "email": "1@1.com", 
+  "main_char": "Lee", 
+  "steam_profile": "", 
+  "description": "", 
+  "password": "qwer1234", 
+  "password2": "qwer1234"
+}
+
+PUT http://localhost:3000/api/user/2 HTTP/1.1
+content-type: application/json
+
+{
+  "name": "Arctik",
+  "main_char": "Lars",
+  "password": "qwer11234", 
+  "password2": "qwer11234"
+}
+
+DELETE http://localhost:3000/api/user/1 HTTP/1.1
