@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const db = require('../db');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const schemaCrete = Joi.object({
     name: Joi.string()
@@ -74,9 +75,47 @@ class UserController {
         }
 
     }
+
+    async loginUser(req, res) {
+        const { name, password } = req.body;
+        const user = await db.query('select name, password, userid from users where name = $1', [name.trim()]);
+
+        if (user.rows[0].name) {
+            bcrypt.compare(password, user.rows[0].password, (err, isMatch) => {
+                if (err) throw err;
+                if (isMatch)
+                    jwt.sign({
+                        user: {
+                            name: user.rows[0].name,
+                            userid: user.rows[0].userid
+                        }
+                    }, process.env.JWT_SECRET_KEY, (err, token) => {
+                        if (err)
+                            throw err;
+                        else
+                            return res.json({ token });
+                    })
+                else return res.json({ message: "Password incorrect" });
+            })
+        } else {
+            res.json({ error: "No such user" });
+            return;
+        }
+
+    }
+
     async getUsers(req, res) {
-        const users = await db.query('SELECT * FROM Users')
-        res.json(users.rows)
+        jwt.verify(req.token, process.env.JWT_SECRET_KEY, async(err, auth_data) => {
+            if (err)
+                res.sendStatus(403)
+            else {
+                const users = await db.query('SELECT * FROM Users')
+                res.json({
+                    users: users.rows,
+                    auth_data
+                })
+            }
+        })
     }
     async getOneUser(req, res) {
         const id = req.params.id;
